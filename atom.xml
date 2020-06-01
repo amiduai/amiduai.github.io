@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://amiduai.github.io</id>
-    <title>Gridea</title>
-    <updated>2020-06-01T14:18:13.781Z</updated>
+    <title>duaiduai</title>
+    <updated>2020-06-01T14:32:27.400Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://amiduai.github.io"/>
     <link rel="self" href="https://amiduai.github.io/atom.xml"/>
     <subtitle>温故而知新</subtitle>
     <logo>https://amiduai.github.io/images/avatar.png</logo>
     <icon>https://amiduai.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, duaiduai</rights>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://amiduai.github.io/post/hello-gridea/</id>
