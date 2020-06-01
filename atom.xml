@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://amiduai.github.io</id>
     <title>duaiduai</title>
-    <updated>2020-06-01T15:32:50.658Z</updated>
+    <updated>2020-06-01T19:26:54.108Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://amiduai.github.io"/>
     <link rel="self" href="https://amiduai.github.io/atom.xml"/>
@@ -10,6 +10,15 @@
     <logo>https://amiduai.github.io/images/avatar.png</logo>
     <icon>https://amiduai.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, duaiduai</rights>
+    <entry>
+        <title type="html"><![CDATA[Links]]></title>
+        <id>https://amiduai.github.io/post/links/</id>
+        <link href="https://amiduai.github.io/post/links/">
+        </link>
+        <updated>2020-06-01T19:25:39.000Z</updated>
+        <content type="html"><![CDATA[<p><a href="https://www.codesheep.cn/">CodeSheep</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[从关山口到五道口（二)(2020年清华912考研全程回顾）]]></title>
         <id>https://amiduai.github.io/post/cong-guan-shan-kou-dao-wu-dao-kou-er-2020-nian-qing-hua-912-kao-yan-quan-cheng-hui-gu/</id>
