@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://amiduai.github.io</id>
     <title>duaiduai</title>
-    <updated>2020-06-12T11:35:09.190Z</updated>
+    <updated>2020-06-12T13:25:55.860Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://amiduai.github.io"/>
     <link rel="self" href="https://amiduai.github.io/atom.xml"/>
@@ -16,7 +16,8 @@
         <link href="https://amiduai.github.io/post/pan-dian-yi-xia-wo-de-bi-bei-ruan-jian/">
         </link>
         <updated>2020-06-12T11:27:03.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="上网娱乐类">上网娱乐类</h2>
+        <content type="html"><![CDATA[<p>每次重装系统都忘记要装啥软件，这次干脆把我个人常用的软件记录下来以供不时之需。</p>
+<h2 id="上网娱乐类">上网娱乐类</h2>
 <p>QQ ，微信，网易云音乐，Chrome，</p>
 <h2 id="办公类">办公类</h2>
 <p>Microsoft Office 套件，Microsoft Visio，福昕PDF编辑器，foxmail.</p>
