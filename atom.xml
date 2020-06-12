@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://amiduai.github.io</id>
     <title>duaiduai</title>
-    <updated>2020-06-12T10:20:14.870Z</updated>
+    <updated>2020-06-12T11:32:54.166Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://amiduai.github.io"/>
     <link rel="self" href="https://amiduai.github.io/atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>https://amiduai.github.io/images/avatar.png</logo>
     <icon>https://amiduai.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, duaiduai</rights>
+    <entry>
+        <title type="html"><![CDATA[ 盘点一下我的必备软件]]></title>
+        <id>https://amiduai.github.io/post/pan-dian-yi-xia-wo-de-bi-bei-ruan-jian/</id>
+        <link href="https://amiduai.github.io/post/pan-dian-yi-xia-wo-de-bi-bei-ruan-jian/">
+        </link>
+        <updated>2020-06-12T11:27:03.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="上网娱乐类">上网娱乐类</h2>
+<p>QQ ，微信，网易云音乐，Chrome，</p>
+<h2 id="办公类">办公类</h2>
+<p>Microsoft Office 套件，Microsoft Visio，福昕PDF编辑器，foxmail.</p>
+<h2 id="辅助类">辅助类</h2>
+<p>网易有道词典，OBS studio。</p>
+<h2 id="生产力工具">生产力工具</h2>
+<p>VS code，typora,</p>
+<h1 id="其他">其他</h1>
+<p>百度网盘，坚果云。</p>
+<h1 id="网站汇总">网站汇总</h1>
+<h2 id="技术学习网站">技术学习网站</h2>
+<p>MOOC，B站，github</p>
+<h2 id="编程">编程</h2>
+<p>HDU，POJ,洛谷，leetcode，牛客，N诺</p>
+<h2 id="外语学习">外语学习</h2>
+<p>沪江词典，naver</p>
+<h2 id="程序员必逛网站">程序员必逛网站</h2>
+<p>Github，StackOverFlow，菜鸟教程，菜鸟工具，SegmentFault，csdn，博客园，http://www.bewindoweb.com/dwg.php<br>
+百度文库下载：http://www.blpack.com/</p>
+<h2 id="娱乐类网站">娱乐类网站</h2>
+<p>银弹在线https://play.sbsub.com/，</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[从关山口到五道口（二)(2020年清华912考研全程回顾）]]></title>
         <id>https://amiduai.github.io/post/cong-guan-shan-kou-dao-wu-dao-kou-er-2020-nian-qing-hua-912-kao-yan-quan-cheng-hui-gu/</id>
