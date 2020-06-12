@@ -1,109 +1,98 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" >
+    
+<meta charset="utf-8" >
 
 <title>从关山口到五道口（二)(2020年清华912考研全程回顾） | duaiduai</title>
+<meta name="description" content="温故而知新">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://amiduai.github.io/favicon.ico?v=1591178985097">
+<link rel="shortcut icon" href="https://amiduai.github.io/favicon.ico?v=1591956324507">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://amiduai.github.io/styles/main.css">
 
 
 
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 
 
 
-    <meta name="description" content="0. 写在前面
-
-最近考研复试和毕业答辩陆续结束，自己也放松了一周左右，感觉是时候做个总结了。
-如果有看过从关山口到五道口（一）的同学肯定觉得这个标题很熟悉吧。没错，那篇文章的作者是我的学长，现在又成了我的学长。他在我考研期间提供了很多帮助..." />
-    <meta name="keywords" content="" />
   </head>
   <body>
     <div id="app" class="main">
-
-      <div class="sidebar" :class="{ 'full-height': menuVisible }">
-  <div class="top-container" data-aos="fade-right">
-    <div class="top-header-container">
-      <a class="site-title-container" href="https://amiduai.github.io">
-        <img src="https://amiduai.github.io/images/avatar.png?v=1591178985097" class="site-logo">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://amiduai.github.io">
+        <img class="avatar" src="https://amiduai.github.io/images/avatar.png?v=1591956324507" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://amiduai.github.io">
         <h1 class="site-title">duaiduai</h1>
       </a>
-      <div class="menu-btn" @click="menuVisible = !menuVisible">
-        <div class="line"></div>
-      </div>
     </div>
-    <div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
       
         
-          <a href="/" class="site-nav">
+          <a href="/" class="menu purple-link">
             首页
           </a>
         
       
         
-          <a href="/archives" class="site-nav">
+          <a href="/archives" class="menu purple-link">
             归档
           </a>
         
       
         
-          <a href="/tags" class="site-nav">
+          <a href="/tags" class="menu purple-link">
             标签
           </a>
         
       
         
-          <a href="/post/about" class="site-nav">
+          <a href="/post/about" class="menu purple-link">
             关于
           </a>
         
       
         
-          <a href="https://amiduai.github.io/post/links" class="site-nav">
+          <a href="https://amiduai.github.io/post/links" class="menu purple-link">
             友情链接
           </a>
         
       
     </div>
   </div>
-  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
-    <div class="social-container">
-      
-        
-      
-        
-      
-        
-      
-        
-      
-        
-      
-    </div>
-    <div class="site-description">
-      温故而知新
-    </div>
-    <div class="site-footer">
-      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://amiduai.github.io/atom.xml" target="_blank">RSS</a>
-    </div>
-  </div>
-</div>
+</transition>
 
 
-      <div class="main-container">
-        <div class="content-container" data-aos="fade-up">
-          <div class="post-detail">
-            <h2 class="post-title">从关山口到五道口（二)(2020年清华912考研全程回顾）</h2>
-            <div class="post-date">2020-06-01</div>
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">从关山口到五道口（二)(2020年清华912考研全程回顾）</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2020-06-01</span>
             
-            <div class="post-content" v-pre>
-              <h2 id="0-写在前面">0. 写在前面</h2>
+          </div>
+          <div class="post-content">
+            <h2 id="0-写在前面">0. 写在前面</h2>
 <ul>
 <li>最近考研复试和毕业答辩陆续结束，自己也放松了一周左右，感觉是时候做个总结了。</li>
 <li>如果有看过<a href="https://blog.csdn.net/Zee_Chao/article/details/88909444">从关山口到五道口（一）</a>的同学肯定觉得这个标题很熟悉吧。没错，那篇文章的作者是我的学长，现在又成了我的学长。他在我考研期间提供了很多帮助，非常感谢这位他，当然也非常感谢其他老师、学长、同学对我的帮助，我也非常荣幸能有机会写下这篇文章。</li>
@@ -445,7 +434,7 @@
 看完就可以作答，我思考了一会，开始口述答案。我先是解释终端隐藏，然后终端暴露我忘了，就直接说忘了。<br>
 2.题目很长，没咋细看，我看到最后一句是该主机用浏览器访问www.edu.cn的收发包过程，然后稍加思考，开始边看题边口述答案。</p>
 <p>紧接着是项目问题，我的毕设用强化学习实现一个推荐模型。<br>
-  第一个问题问MDP中的奖励函数如何实现的，我说了一大堆细节，但是老师觉得我的回答姿势不对。然后我就说根据用户偏好，假如用户喜欢推荐系统推荐的商品则给予相应的正奖励，不喜欢则给予相应的负奖励，然后老师连忙点头，我：？。又问，你的模型是怎么利用文本信息的的到商品表示的，你的词向量多少维.....<br>
+  第一个问题问MDP中的奖励函数如何实现的，我说了一大堆细节，但是老师觉得我的回答姿势不对。然后我就说根据用户偏好，假如用户喜欢推荐系统推荐的商品则给予相应的正奖励，不喜欢则给予相应的负奖励，然后老师连忙点头，我：？。又问，你的模型是怎么利用文本信息得到商品表示的，你的词向量多少维.....<br>
   然后换了个老师问，你x86模拟器实现中的diff-test是什么意思，我：balabala.....<br>
   又换个老师问：你提到了你对人工智能应用到网安感兴趣，你知道有哪些实例吗？<br>
   答：智能防火墙，balabala....<br>
@@ -458,31 +447,45 @@
 <p>考研是一个实力，运气，选择等各方面于一体的考试，胆量，心态，判断力，自学能力，时间规划能力，时间管理能力，资料搜集能力这些都能影响甚至决定最后的成败。很幸运能参加这样的考试，也很幸运能一战上岸，写下这样一篇帖子记录自己人生中非常重要的一段经历，也希望能给后来人一些帮助。<br>
   最后，祝大家心想事成，早日考上自己心仪的学校。</p>
 
-            </div>
-            
-            
-              <div class="next-post">
-                <div class="next">下一篇</div>
-                <a href="https://amiduai.github.io/post/hello-gridea/">
-                  <h3 class="post-title">
-                    Hello Gridea
-                  </h3>
-                </a>
-              </div>
-            
-
-            
-
           </div>
-
         </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://amiduai.github.io/post/hello-gridea/">
+              <h3 class="post-title">
+                下一篇：Hello Gridea
+              </h3>
+            </a>
+          </div>
+          
       </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">温故而知新</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://amiduai.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
     </div>
+    <script type="application/javascript">
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script type="application/javascript">
-
-AOS.init();
+hljs.initHighlightingOnLoad()
 
 var app = new Vue({
   el: '#app',
@@ -492,8 +495,6 @@ var app = new Vue({
 })
 
 </script>
-
-
 
 
 
