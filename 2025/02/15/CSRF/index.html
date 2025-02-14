@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>CSRF | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在本节中，我们将解释什么是跨站请求伪造，列举一些常见的 CSRF 漏洞示例，并说明如何防范 CSRF 攻击。 什么是 CSRF？跨站请求伪造（也称为 CSRF）是一种网络安全漏洞，攻击者可利用该漏洞诱使用户执行他们本无意执行的操作。它使攻击者能够部分绕过同源策略，而同源策略旨在防止不同网站相互干扰。 CSRF 攻击的影响是什么？在成功的 CSRF 攻击中，攻击者会使受害用户无意中执行某项操作。例如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSRF">
+<meta property="og:url" content="http://amiduai.github.io/2025/02/15/CSRF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在本节中，我们将解释什么是跨站请求伪造，列举一些常见的 CSRF 漏洞示例，并说明如何防范 CSRF 攻击。 什么是 CSRF？跨站请求伪造（也称为 CSRF）是一种网络安全漏洞，攻击者可利用该漏洞诱使用户执行他们本无意执行的操作。它使攻击者能够部分绕过同源策略，而同源策略旨在防止不同网站相互干扰。 CSRF 攻击的影响是什么？在成功的 CSRF 攻击中，攻击者会使受害用户无意中执行某项操作。例如">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://vulnerable-website.com/email/change?email=pwned@evil-user.net">
+<meta property="article:published_time" content="2025-02-14T16:07:17.000Z">
+<meta property="article:modified_time" content="2025-02-14T16:18:29.584Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://vulnerable-website.com/email/change?email=pwned@evil-user.net">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://amiduai.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSRF" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/15/CSRF/" class="article-date">
+  <time class="dt-published" datetime="2025-02-14T16:07:17.000Z" itemprop="datePublished">2025-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CSRF
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在本节中，我们将解释什么是跨站请求伪造，列举一些常见的 CSRF 漏洞示例，并说明如何防范 CSRF 攻击。</p>
+<h2 id="什么是-CSRF？"><a href="#什么是-CSRF？" class="headerlink" title="什么是 CSRF？"></a>什么是 CSRF？</h2><p>跨站请求伪造（也称为 CSRF）是一种网络安全漏洞，攻击者可利用该漏洞诱使用户执行他们本无意执行的操作。它使攻击者能够部分绕过同源策略，而同源策略旨在防止不同网站相互干扰。</p>
+<h2 id="CSRF-攻击的影响是什么？"><a href="#CSRF-攻击的影响是什么？" class="headerlink" title="CSRF 攻击的影响是什么？"></a>CSRF 攻击的影响是什么？</h2><p>在成功的 CSRF 攻击中，攻击者会使受害用户无意中执行某项操作。例如，这可能是更改其账户的电子邮件地址、更改密码或进行资金转账。根据操作的性质，攻击者可能能够完全控制用户的账户。如果被入侵的用户在应用程序中具有特权角色，那么攻击者可能能够完全控制应用程序的所有数据和功能。</p>
+<h2 id="CSRF-是如何运作的？"><a href="#CSRF-是如何运作的？" class="headerlink" title="CSRF 是如何运作的？"></a>CSRF 是如何运作的？</h2><p>要实现 CSRF 攻击，必须满足三个关键条件：</p>
+<p>相关操作。应用程序中存在攻击者有理由诱导用户执行的操作。这可能是一个特权操作（例如修改其他用户的权限），或者是对用户特定数据执行的任何操作（例如更改用户自己的密码）。</p>
+<p>基于 Cookie 的会话处理。执行该操作涉及发出一个或多个 HTTP 请求，并且应用程序仅依赖会话 Cookie 来识别发出请求的用户。不存在其他用于跟踪会话或验证用户请求的机制。</p>
+<p>请求参数可预测。执行该操作的请求不包含攻击者无法确定或猜测其值的任何参数。例如，在诱使用户更改密码时，如果攻击者需要知道现有密码的值，那么该功能就不存在漏洞。 例如，假设一个应用程序包含一个允许用户更改其账户电子邮件地址的功能。当用户执行此操作时，他们会发出如下 HTTP 请求：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST /email/change HTTP/1.1</span><br><span class="line">Host: vulnerable-website.com</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 30</span><br><span class="line">Cookie: session=yvthwsztyeQkAPzeQ5gHgTvlyxHfsAfE</span><br><span class="line"></span><br><span class="line">email=wiener@normal-user.com</span><br></pre></td></tr></table></figure>
+<p>这满足了 CSRF 所需的条件：</p>
+<p>攻击者会对更改用户账户电子邮件地址的操作感兴趣。执行此操作后，攻击者通常能够触发密码重置并完全控制用户的账户。<br>应用程序使用会话 Cookie 来识别发出请求的用户。<br>不存在其他用于跟踪用户会话的令牌或机制。<br>攻击者可以轻松确定执行该操作所需的请求参数的值。<br>在满足这些条件的情况下，攻击者可以构建一个包含以下 HTML 的网页：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;https://vulnerable-website.com/email/change&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;pwned@evil-user.net&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">document</span>.<span class="property">forms</span>[<span class="number">0</span>].<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果受害用户访问攻击者的网页，将会发生以下情况：</p>
+<p>攻击者的页面将触发对存在漏洞的网站的 HTTP 请求。如果用户已登录到存在漏洞的网站，其浏览器将自动在请求中包含其会话 Cookie（假设未使用 SameSite Cookie）。<br>存在漏洞的网站将以正常方式处理该请求，将其视为由受害用户发出的请求，并更改其电子邮件地址。<br>注意<br>虽然 CSRF 通常是在基于 Cookie 的会话处理的背景下进行描述，但它也会出现在其他情况下，即应用程序自动将一些用户凭证添加到请求中，例如 HTTP 基本认证和基于证书的认证</p>
+<h2 id="如何构建-CSRF-攻击"><a href="#如何构建-CSRF-攻击" class="headerlink" title="如何构建 CSRF 攻击"></a>如何构建 CSRF 攻击</h2><p>手动创建 CSRF 利用所需的 HTML 可能很麻烦，特别是当所需的请求包含大量参数或请求存在其他特殊情况时。构建 CSRF 利用的最简单方法是使用 Burp Suite Professional 内置的 CSRF PoC 生成器：</p>
+<p>在 Burp Suite Professional 中的任何位置选择您要测试或利用的请求。<br>从右键上下文菜单中，选择 “Engagement tools（参与工具）”&#x2F;“Generate CSRF PoC（生成 CSRF PoC）”。<br>Burp Suite 将生成一些 HTML，这些 HTML 将触发所选的请求（不包含 Cookie，Cookie 将由受害者的浏览器自动添加）。<br>您可以在 CSRF PoC 生成器中调整各种选项，以微调攻击的各个方面。在某些不寻常的情况下，您可能需要这样做，以处理请求的特殊功能。<br>将生成的 HTML 复制到一个网页中，在已登录到存在漏洞的网站的浏览器中查看该网页，并测试预期的请求是否成功发出以及所需的操作是否发生。</p>
+<h2 id="如何实施-CSRF-攻击"><a href="#如何实施-CSRF-攻击" class="headerlink" title="如何实施 CSRF 攻击"></a>如何实施 CSRF 攻击</h2><p>跨站请求伪造攻击的实施机制与反射型 XSS 基本相同。通常，攻击者会将恶意 HTML 放置在他们控制的网站上，然后诱使受害者访问该网站。这可能通过向用户发送指向该网站的链接来实现，例如通过电子邮件或社交媒体消息。或者，如果攻击被放置在一个热门网站上（例如，在用户评论中），他们可能只需等待用户访问该网站。</p>
+<p>请注意，一些简单的 CSRF 攻击采用 GET 方法，并且可以通过存在漏洞的网站上的单个 URL 完全独立实现。在这种情况下，攻击者可能不需要使用外部网站，而是可以直接向受害者提供存在漏洞的域上的恶意 URL。在前面的示例中，如果更改电子邮件地址的请求可以使用 GET 方法执行，那么一个独立的攻击看起来可能如下：</p>
+<img src="https://vulnerable-website.com/email/change?email=pwned@evil-user.net">
+## 防范CSRF的常见措施
+如今，成功发现并利用CSRF漏洞通常需要绕过目标网站、受害者浏览器或两者部署的反CSRF措施。您会遇到的最常见防御措施如下：
+
+<p>CSRF 令牌 - CSRF 令牌是由服务器端应用程序生成并与客户端共享的唯一、保密且不可预测的值。当尝试执行敏感操作（例如提交表单）时，客户端必须在请求中包含正确的 CSRF 令牌。这使得攻击者很难代表受害者构造有效的请求。<br>SameSite Cookie - SameSite 是一种浏览器安全机制，用于确定网站的 Cookie 何时包含在源自其他网站的请求中。由于执行敏感操作的请求通常需要经过身份验证的会话 Cookie，适当的 SameSite 限制可能会阻止攻击者跨站触发这些操作。自 2021 年起，Chrome 默认强制执行 Lax SameSite 限制。由于这是提议的标准，我们预计其他主流浏览器未来也会采用这种行为。<br>基于 Referer 的验证 - 一些应用程序利用 HTTP Referer 标头来尝试防范 CSRF 攻击，通常是通过验证请求是否源自应用程序自身的域。这通常不如 CSRF 令牌验证有效。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://amiduai.github.io/2025/02/15/CSRF/" data-id="cm74z3w3t0000sr6sh1mc24x9" data-title="CSRF" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/02/10/title/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/02/15/CSRF/">CSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/10/title/">Hello</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/10/API%E6%B5%8B%E8%AF%95/">API测试</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
