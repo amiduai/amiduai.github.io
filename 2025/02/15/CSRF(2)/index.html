@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>绕过 CSRF 令牌验证 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="在本节中，我们将解释什么是 CSRF 令牌，它们如何防范 CSRF 攻击，以及攻击者可能如何绕过这些防御措施。 什么是 CSRF 令牌？CSRF 令牌是由服务器端应用程序生成并与客户端共享的唯一、保密且不可预测的值。当客户端发起执行敏感操作的请求（例如提交表单）时，必须包含正确的 CSRF 令牌。否则，服务器将拒绝执行所请求的操作。 一种常见的与客户端共享 CSRF 令牌的方式是将其作为 HTML">
+<meta property="og:type" content="article">
+<meta property="og:title" content="绕过 CSRF 令牌验证">
+<meta property="og:url" content="http://amiduai.github.io/2025/02/15/CSRF(2)/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在本节中，我们将解释什么是 CSRF 令牌，它们如何防范 CSRF 攻击，以及攻击者可能如何绕过这些防御措施。 什么是 CSRF 令牌？CSRF 令牌是由服务器端应用程序生成并与客户端共享的唯一、保密且不可预测的值。当客户端发起执行敏感操作的请求（例如提交表单）时，必须包含正确的 CSRF 令牌。否则，服务器将拒绝执行所请求的操作。 一种常见的与客户端共享 CSRF 令牌的方式是将其作为 HTML">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-02-14T16:07:17.000Z">
+<meta property="article:modified_time" content="2025-02-14T16:20:15.252Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://amiduai.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSRF(2)" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/02/15/CSRF(2)/" class="article-date">
+  <time class="dt-published" datetime="2025-02-14T16:07:17.000Z" itemprop="datePublished">2025-02-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      绕过 CSRF 令牌验证
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>在本节中，我们将解释什么是 CSRF 令牌，它们如何防范 CSRF 攻击，以及攻击者可能如何绕过这些防御措施。</p>
+<p>什么是 CSRF 令牌？<br>CSRF 令牌是由服务器端应用程序生成并与客户端共享的唯一、保密且不可预测的值。当客户端发起执行敏感操作的请求（例如提交表单）时，必须包含正确的 CSRF 令牌。否则，服务器将拒绝执行所请求的操作。</p>
+<p>一种常见的与客户端共享 CSRF 令牌的方式是将其作为 HTML 表单中的隐藏参数，例如：</p>
+<form name="change-email-form" action="/my-account/change-email" method="POST"> 
+<label>Email</label> 
+<input required type="email" name="email" value="example@normal-website.com"> 
+<input required type="hidden" name="csrf" value="50FaWgdOhi9M9wyna8taR1k3ODOR8d6u"> 
+<button class='button' type='submit'> Update email </button> 
+</form>
+提交此表单会产生以下请求：
+
+<p>POST &#x2F;my-account&#x2F;change-email HTTP&#x2F;1.1<br>Host: normal-website.com<br>Content-Length: 70<br>Content-Type: application&#x2F;x-www-form-urlencoded  </p>
+<p>csrf&#x3D;50FaWgdOhi9M9wyna8taR1k3ODOR8d6u&amp;email&#x3D;<a href="mailto:&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#101;&#64;&#110;&#x6f;&#x72;&#x6d;&#97;&#108;&#45;&#119;&#x65;&#98;&#x73;&#x69;&#x74;&#x65;&#x2e;&#x63;&#111;&#109;">example@normal-website.com</a><br>如果实现正确，CSRF 令牌可以使攻击者难以代表受害者构造有效的请求，从而有助于防范 CSRF 攻击。由于攻击者无法预测 CSRF 令牌的正确值，他们将无法在恶意请求中包含该令牌。</p>
+<p>注意：<br>CSRF 令牌不必作为 POST 请求中的隐藏参数发送。例如，有些应用程序会将 CSRF 令牌放在 HTTP 标头中。令牌的传输方式对整个机制的安全性有重大影响。更多信息请参阅 “如何防范 CSRF 漏洞”。</p>
+<p>CSRF 令牌验证中的常见缺陷<br>CSRF 漏洞通常是由于 CSRF 令牌验证存在缺陷而产生的。在本节中，我们将介绍一些使攻击者能够绕过这些防御措施的最常见问题。</p>
+<p>CSRF 令牌验证依赖于请求方法<br>有些应用程序在请求使用 POST 方法时会正确验证令牌，但在使用 GET 方法时会跳过验证。</p>
+<p>在这种情况下，攻击者可以切换到 GET 方法来绕过验证并实施 CSRF 攻击：</p>
+<p>GET &#x2F;email&#x2F;change?email&#x3D;<a href="mailto:&#112;&#119;&#x6e;&#101;&#100;&#x40;&#101;&#x76;&#x69;&#x6c;&#45;&#x75;&#115;&#x65;&#114;&#x2e;&#110;&#x65;&#116;">pwned@evil-user.net</a> HTTP&#x2F;1.1<br>Host: vulnerable-website.com<br>Cookie: session&#x3D;2yQIDcpia41WrATfjPqvm9tOkDvkMvLm<br>CSRF 令牌验证依赖于令牌是否存在<br>有些应用程序在令牌存在时会正确验证，但如果省略令牌则会跳过验证。</p>
+<p>在这种情况下，攻击者可以移除包含令牌的整个参数（而不仅仅是其值）来绕过验证并实施 CSRF 攻击：</p>
+<p>POST &#x2F;email&#x2F;change HTTP&#x2F;1.1<br>Host: vulnerable-website.com<br>Content-Type: application&#x2F;x-www-form-urlencoded<br>Content-Length: 25<br>Cookie: session&#x3D;2yQIDcpia41WrATfjPqvm9tOkDvkMvLm  </p>
+<p>email&#x3D;<a href="mailto:&#112;&#119;&#110;&#101;&#x64;&#64;&#101;&#118;&#x69;&#x6c;&#x2d;&#x75;&#115;&#x65;&#114;&#x2e;&#x6e;&#x65;&#116;">pwned@evil-user.net</a><br>CSRF 令牌未与用户会话绑定<br>有些应用程序不会验证令牌是否属于发出请求的用户的同一会话。相反，应用程序会维护一个已发出令牌的全局池，并接受该池中出现的任何令牌。</p>
+<p>在这种情况下，攻击者可以使用自己的账户登录应用程序，获取一个有效令牌，然后在 CSRF 攻击中将该令牌提供给受害用户。</p>
+<p>CSRF 令牌与非会话 Cookie 绑定<br>作为上述漏洞的一种变体，有些应用程序确实会将 CSRF 令牌与 Cookie 绑定，但不是与会话跟踪所使用的同一个 Cookie 绑定。当应用程序使用两个不同的框架（一个用于会话处理，一个用于 CSRF 保护）且它们没有集成在一起时，就很容易出现这种情况：</p>
+<p>POST &#x2F;email&#x2F;change HTTP&#x2F;1.1<br>Host: vulnerable-website.com<br>Content-Type: application&#x2F;x-www-form-urlencoded<br>Content-Length: 68<br>Cookie: session&#x3D;pSJYSScWKpmC60LpFOAHKixuFuM4uXWF; csrfKey&#x3D;rZHCnSzEp8dbI6atzagGoSYyqJqTz5dv  </p>
+<p>csrf&#x3D;RhV7yQDO0xcq9gLEah2WVbmuFqyOq7tY&amp;email&#x3D;<a href="mailto:&#119;&#x69;&#x65;&#110;&#101;&#114;&#x40;&#x6e;&#x6f;&#x72;&#x6d;&#x61;&#x6c;&#x2d;&#117;&#x73;&#101;&#x72;&#x2e;&#99;&#x6f;&#x6d;">wiener@normal-user.com</a><br>这种情况更难利用，但仍然存在漏洞。如果网站包含任何允许攻击者在受害者浏览器中设置 Cookie 的行为，那么攻击就有可能实现。攻击者可以使用自己的账户登录应用程序，获取一个有效令牌和相关的 Cookie，利用设置 Cookie 的行为将自己的 Cookie 放入受害者的浏览器中，并在 CSRF 攻击中将自己的令牌提供给受害者。</p>
+<p>注意：<br>设置 Cookie 的行为甚至不必存在于与 CSRF 漏洞所在的同一个 Web 应用程序中。如果所控制的 Cookie 具有合适的作用域，那么同一整体 DNS 域内的任何其他应用程序都有可能被用来在目标应用程序中设置 Cookie。例如，可以利用 staging.demo.normal-website.com 上的 Cookie 设置功能来放置一个会提交到 secure.normal-website.com 的 Cookie。</p>
+<p>CSRF 令牌简单地复制到 Cookie 中<br>作为上述漏洞的进一步变体，有些应用程序不会维护已发出令牌的任何服务器端记录，而是将每个令牌同时复制到 Cookie 和请求参数中。在验证后续请求时，应用程序只是验证请求参数中提交的令牌是否与 Cookie 中提交的值匹配。这有时被称为针对 CSRF 的 “双重提交” 防御，因其易于实现且无需任何服务器端状态而受到推崇：</p>
+<p>POST &#x2F;email&#x2F;change HTTP&#x2F;1.1<br>Host: vulnerable-website.com<br>Content-Type: application&#x2F;x-www-form-urlencoded<br>Content-Length: 68<br>Cookie: session&#x3D;1DQGdzYbOJQzLP7460tfyiv3do7MjyPw; csrf&#x3D;R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa  </p>
+<p>csrf&#x3D;R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa&amp;email&#x3D;<a href="mailto:&#x77;&#x69;&#101;&#110;&#101;&#114;&#x40;&#110;&#x6f;&#x72;&#109;&#x61;&#x6c;&#45;&#117;&#115;&#101;&#114;&#x2e;&#x63;&#111;&#109;">wiener@normal-user.com</a><br>在这种情况下，如果网站包含任何设置 Cookie 的功能，攻击者仍然可以实施 CSRF 攻击。在这里，攻击者无需获取自己的有效令牌。他们只需编造一个令牌（如果有格式检查，可能需要符合所需格式），利用设置 Cookie 的行为将自己的 Cookie 放入受害者的浏览器中，并在 CSRF 攻击中将该令牌提供给受害者。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://amiduai.github.io/2025/02/15/CSRF(2)/" data-id="cm74z60hs0001ve6s04pkh6t0" data-title="绕过 CSRF 令牌验证" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/02/15/CSRF(1)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CSRF
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/02/10/title/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/02/">February 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/02/15/CSRF(1)/">CSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/15/CSRF(2)/">绕过 CSRF 令牌验证</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/10/title/">Hello</a>
+          </li>
+        
+          <li>
+            <a href="/2025/02/10/API%E6%B5%8B%E8%AF%95/">API测试</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
