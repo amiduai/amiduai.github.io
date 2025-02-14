@@ -13,10 +13,12 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="在本节中，我们将解释跨源资源共享（CORS）是什么，描述一些基于跨源资源共享的常见攻击示例，并讨论如何防范这些攻击。 什么是 CORS（跨源资源共享）？跨源资源共享（CORS）是一种浏览器机制，它允许对特定域之外的资源进行受控访问。它扩展了同源策略（SOP）并增加了其灵活性。然而，如果网站的 CORS 策略配置和实施不当，它也会为跨域攻击提供可乘之机。CORS 并不能防范诸如跨站请求伪造（CSRF">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://amiduai.github.io/images/cors.jpg">
 <meta property="article:published_time" content="2025-02-14T16:07:17.000Z">
-<meta property="article:modified_time" content="2025-02-14T16:38:56.389Z">
+<meta property="article:modified_time" content="2025-02-14T16:39:24.491Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://amiduai.github.io/images/cors.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -95,7 +97,7 @@
       
         <p>在本节中，我们将解释跨源资源共享（CORS）是什么，描述一些基于跨源资源共享的常见攻击示例，并讨论如何防范这些攻击。</p>
 <h2 id="什么是-CORS（跨源资源共享）？"><a href="#什么是-CORS（跨源资源共享）？" class="headerlink" title="什么是 CORS（跨源资源共享）？"></a>什么是 CORS（跨源资源共享）？</h2><p>跨源资源共享（CORS）是一种浏览器机制，它允许对特定域之外的资源进行受控访问。它扩展了同源策略（SOP）并增加了其灵活性。然而，如果网站的 CORS 策略配置和实施不当，它也会为跨域攻击提供可乘之机。CORS 并不能防范诸如跨站请求伪造（CSRF）之类的跨源攻击 。</p>
-<p>跨源资源共享示意图<br>[！跨源资源共享示意图]（</p>
+<p><img src="/images/cors.jpg" alt="跨源资源共享示意图"></p>
 <h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>同源策略是一种限制性的跨源规范，它限制了网站与源域之外的资源进行交互的能力。同源策略是多年前为应对潜在的恶意跨域交互（例如一个网站窃取另一个网站的私人数据）而制定的。它通常允许一个域向其他域发出请求，但不允许访问响应内容。</p>
 <h2 id="同源策略的放宽"><a href="#同源策略的放宽" class="headerlink" title="同源策略的放宽"></a>同源策略的放宽</h2><p>同源策略非常严格，因此人们想出了各种方法来规避这些限制。许多网站以需要完全跨源访问的方式与子域或第三方站点进行交互。使用跨源资源共享（CORS）可以对同源策略进行有控制的放宽。</p>
 <p>跨源资源共享协议使用一组 HTTP 头，这些头定义了受信任的网络源以及相关属性，例如是否允许经过身份验证的访问。这些头在浏览器与它试图访问的跨源网站之间的头信息交换中组合使用。</p>
